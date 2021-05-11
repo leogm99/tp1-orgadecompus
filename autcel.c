@@ -1,53 +1,34 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <getopt.h>
-#define V "0.0.1"
+#include "autcel.h"
+#include "file_reader.h"
+#define TAMANIO_INICIAL_A 8
+size_t get_cells_values(){
 
-unsigned char proximo(unsigned char* a,
-                      unsigned int i, unsigned int j,
-                      unsigned char regla, unsigned int N);
+    //unsigned char a[] = {0, 0, 1, 0, 0, 0, 1, 0, 1, 1};
 
-int main(int argc, char* const* argv){
-    int opt;
-
-    while (1){
-        static struct option options[] = {
-            {"help", no_argument, 0, 'h'},
-            {"version", no_argument, 0, 'v'},
-            {0,0,0,0}
-        };
-
-        opt = getopt_long(argc, argv, "hvo:", options, 0);
-        if (opt == -1){
-            break;
+    int array_size = TAMANIO_INICIAL_A * sizeof(unsigned char), tope_a = 0;
+    
+    unsigned char * a = malloc(array_size);    //todo check null 
+    unsigned char bit;
+   
+    file_reader_t file;
+    
+    if (file_reader_init(&file, "inicial") == FR_ERROR)
+        return FR_ERROR;
+    while(((bit = file_reader_number(&file)) != FR_ERROR)){
+        if (array_size<(tope_a+1)*sizeof(unsigned char)){
+            a = realloc(a, array_size*2);    //todo check null 
+            array_size*=2;
         }
-        
-        switch (opt){
-            case 'h':
-                printf("Uso:\n");
-                printf(" autcel -h\n autcel -V\n autcel R N inputfile [-o outputprefix]");
-                printf(" Opciones:\n");
-                printf(" -h --help Imprime este mensaje.\n");
-                printf(" -V --version Da la version de este programa.\n");
-                printf(" -o Prefijo de los archivos de salida.\n");
-                break;
-            case 'v':
-                printf("version %s\n", V);
-                break;
-            case 'o':
-                // do stuff
-                printf("%d %d\n", atoi(argv[1]), atoi(argv[2]));
-                break;
-            default:
-                printf("Error\n");
-                return -1;
-        }
+        a[tope_a++] = bit;
     }
 
+    file_reader_uninit(&file);
+
     unsigned char regla = 30;
-    unsigned char a[] = {0, 0, 1, 0, 0, 0, 1, 0, 1, 1};
+
     printf("Proximo %d\n", proximo(a, 0, 4, regla, 10));
+
+    free(a);
 }
 
 // pensado como un arreglo donde cada char es una sola celda
