@@ -66,12 +66,12 @@ proximo:
 # if(!j)
 first_cell:
     addu    $t3, $t1, $t3  # t3 = j + i * N + N - 1
-    addu    $t3, $t3, $t0  # t3 = &a[j + i * N + N - 1]
+    addu    $t3, $t3, $a0  # t3 = &a[j + i * N + N - 1]
     lbu     $t4, 0($t3)    # t4 = a[j + i * N + N - 1]
     sb      $t4, L($fp)    # l = a[j + i * N + N - 1]
 
     addiu   $t3, $t1, 1    # t3 = j + i * N + 1
-    addu    $t3, $t3, $t0   # t3 = &a[j + i * N + 1]
+    addu    $t3, $t3, $a0   # t3 = &a[j + i * N + 1]
     lbu     $t4, 0($t3)
     sb      $t4, R($fp)
 
@@ -87,7 +87,7 @@ last_cell:
 
     negu    $t3           # t3 = -N + 1
     addu    $t1, $t1, $t3 # t1 = j + i * N - N + 1
-    addu    $t1, $t1, $t0 # t1 = &a[j + i * N - N + 1]
+    addu    $t1, $t1, $a0 # t1 = &a[j + i * N - N + 1]
     lbu     $t4, 0($t1)   # t4 = a[j + i * N - N + 1]
     sb      $t4, R($fp)
 
@@ -133,7 +133,7 @@ and_seg:
 
 proximo_end:
     lw      $fp, FP($sp)
-    lw      $gp, GP($gp)
+    lw      $gp, GP($sp)
     addiu   $sp, $sp, FRAME_SIZE 
     jr      $ra
 
