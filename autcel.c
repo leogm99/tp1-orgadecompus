@@ -1,14 +1,15 @@
 #include "autcel.h"
 #include "file_reader.h"
 #define TAMANIO_INICIAL_A 8
-size_t get_cells_values(){
+size_t get_cells_values(int n,unsigned char *a,int array_size){
 
     //unsigned char a[] = {0, 0, 1, 0, 0, 0, 1, 0, 1, 1};
-
-    int array_size = TAMANIO_INICIAL_A * sizeof(unsigned char), tope_a = 0;
+/*
+    int array_size = n * n * sizeof(unsigned char), 
     
-    unsigned char * a = malloc(array_size);    //todo check null 
-    unsigned char bit;
+    a = malloc(array_size);    //todo check null 
+  */  unsigned char bit;
+    int tope_a = 0;
    
     file_reader_t file;
     
@@ -24,11 +25,11 @@ size_t get_cells_values(){
 
     file_reader_uninit(&file);
 
-    unsigned char regla = 30;
+ //   unsigned char regla = 30;
 
-    printf("Proximo %d\n", proximo(a, 0, 4, regla, 10));
+   // printf("Proximo %d\n", proximo(a, 0, 4, regla, 10));
 
-    free(a);
+   // free(a);
 }
 
 // pensado como un arreglo donde cada char es una sola celda
@@ -53,9 +54,9 @@ unsigned char proximo(unsigned char* a,
         l = a[j + i * N - 1];
         r = a[j + i * N + 1];
     }
-    printf("l %d\n", l);
-    printf("c %d\n", c);
-    printf("r %d\n", r);
+ //   printf("l %d\n", l);
+ //   printf("c %d\n", c);
+ //   printf("r %d\n", r);
 
     // tenemos que acceder a regla en su bit lcr -> necesitamos una mascara para ese bit
     l <<= 2; // shifteamos l 2 posiciones (si es 0000 0001 quedara como 0000 0100)

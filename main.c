@@ -36,8 +36,22 @@ int main(int argc, char* const* argv){
         }
     }
 
-    get_cells_values();
+    unsigned int n = atoi(argv[2]);
+    int array_size = n * n * sizeof(unsigned char), tope_a = 0;
+    unsigned char * a = malloc(array_size);
+    get_cells_values(n,a,array_size);
+    unsigned char regla = (unsigned char)atoi(argv[1]);
 
+    printf("%s\n",a );
+    for (int i = 0; i < n*(n-1); ++i){
+         unsigned char caracter = proximo(a,i/n,i%n,regla,n);
+         printf("%d",caracter);
+         if ( (i+1)%n == 0) printf("\n");
+         a[(i/n + 1) + i%n] = caracter;
+    }
+//    printf("%s\n",a);
+
+    free(a);
     return 0;
 }
 
