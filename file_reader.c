@@ -20,5 +20,5 @@ size_t file_reader_uninit(file_reader_t* self){
 unsigned char file_reader_number(file_reader_t* self){
 	unsigned char bit;
 	int read_bytes = fread(&bit, sizeof(unsigned char), 1, self->file);
-	return ((read_bytes == 1) && ((bit == '0') || (bit == '1'))) ? bit : FR_ERROR;
+	return ((read_bytes == 1) && ((bit == '0') || (bit == '1'))) ? bit - '0' : FR_ERROR;
 }

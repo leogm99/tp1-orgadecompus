@@ -4,7 +4,7 @@
 int main(int argc, char* const* argv){
     int opt;
 
-    while (1){
+    /*while (1){
         static struct option options[] = {
             {"help", no_argument, 0, 'h'},
             {"version", no_argument, 0, 'v'},
@@ -34,22 +34,23 @@ int main(int argc, char* const* argv){
                 printf("Error\n");
                 return -1;
         }
-    }
+    }*/
 
     unsigned int n = atoi(argv[2]);
     int array_size = n * n * sizeof(unsigned char), tope_a = 0;
-    unsigned char * a = malloc(array_size);
+    unsigned char * a = calloc(array_size, sizeof(char));
     get_cells_values(n,a,array_size);
     unsigned char regla = (unsigned char)atoi(argv[1]);
+    for (int i = 0; i < n; ++i)
+        printf("%d", a[i]);
 
-    printf("%s\n",a );
+    puts("");
     for (int i = 0; i < n*(n-1); ++i){
-         unsigned char caracter = proximo(a,i/n,i%n,regla,n);
-         printf("%d",caracter);
-         if ( (i+1)%n == 0) printf("\n");
-         a[(i/n + 1) + i%n] = caracter;
+        unsigned char caracter = proximo(a, i/n, i%n, regla, n);
+        a[i+n] = caracter;
+        printf("%d", a[i+n]);
+        if((i+1)%n == 0) puts("");
     }
-//    printf("%s\n",a);
 
     free(a);
     return 0;

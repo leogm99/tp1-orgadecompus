@@ -54,10 +54,7 @@ unsigned char proximo(unsigned char* a,
         l = a[j + i * N - 1];
         r = a[j + i * N + 1];
     }
- //   printf("l %d\n", l);
- //   printf("c %d\n", c);
- //   printf("r %d\n", r);
-
+    
     // tenemos que acceder a regla en su bit lcr -> necesitamos una mascara para ese bit
     l <<= 2; // shifteamos l 2 posiciones (si es 0000 0001 quedara como 0000 0100)
     c <<= 1; // shifteamos c 1 posicion (si es 0000 0001 quedara como 0000 0010)
