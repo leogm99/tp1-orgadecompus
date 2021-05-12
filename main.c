@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include <string.h>
 #include "autcel.h"
 
 int main(int argc, char* const* argv){
     int opt;
-
-    /*while (1){
+/*
+    while (1){
         static struct option options[] = {
             {"help", no_argument, 0, 'h'},
             {"version", no_argument, 0, 'v'},
@@ -34,23 +35,44 @@ int main(int argc, char* const* argv){
                 printf("Error\n");
                 return -1;
         }
-    }*/
-
+    }
+*/
     unsigned int n = atoi(argv[2]);
     int array_size = n * n * sizeof(unsigned char);
-    unsigned char * a = calloc(array_size, sizeof(char));
+    unsigned char* a = malloc(array_size); 
     get_cells_values(n,a,array_size);
     unsigned char regla = (unsigned char)atoi(argv[1]);
-    for (int i = 0; i < n; ++i)
-        printf("%d", a[i]);
 
-    puts("");
+   // for (int j = 0; j<n; ++j) printf("%d",a[j]);
+    printf("\n");
     for (int i = 0; i < n*(n-1); ++i){
-        unsigned char caracter = proximo(a, i/n, i%n, regla, n);
-        a[i+n] = caracter;
-        printf("%d", a[i+n]);
-        if((i+1)%n == 0) puts("");
+         unsigned char caracter = proximo(a,i/n,i%n,regla,n);
+       //  printf("%d",caracter);
+       //  if ((i+1)%n == 0) printf("\n");
+         a[i+n] = caracter;
     }
+
+    //Guardo el arreglo en una imagen pbm
+    char* nombre_salida = "";
+    if (argc == 5) nombre_salida = argv[4];
+    else nombre_salida = argv[3];
+    strstr(nombre_salida,".pbm");
+    
+    int i,temp = 0;
+    FILE* pbmimg;
+    pbmimg = fopen(nombre_salida, "wb");
+    // Writing Magic Number to the File
+    fprintf(pbmimg, "P1\n"); 
+    // Writing Width and Height
+    fprintf(pbmimg, "%d %d\n", n, n); 
+    int count = 0;
+    for (i = 0; i < n*n; i++) {
+        temp = a[i];
+        // Writing the gray values in the 2D array to the file
+        fprintf(pbmimg, "%d ", temp);
+        if ((i+1)%n==0) fprintf(pbmimg, "\n");
+    }
+    fclose(pbmimg);
 
     free(a);
     return 0;
