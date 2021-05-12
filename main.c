@@ -37,7 +37,7 @@ int main(int argc, char* const* argv){
     }*/
 
     unsigned int n = atoi(argv[2]);
-    int array_size = n * n * sizeof(unsigned char), tope_a = 0;
+    int array_size = n * n * sizeof(unsigned char);
     unsigned char * a = calloc(array_size, sizeof(char));
     get_cells_values(n,a,array_size);
     unsigned char regla = (unsigned char)atoi(argv[1]);
