@@ -37,14 +37,18 @@ int main(int argc, char* const* argv){
         }
     }
 */
+    printf("%s\n","Leyendo estado inicial...");
     unsigned int n = atoi(argv[2]);
     int array_size = n * n * sizeof(unsigned char);
     unsigned char* a = malloc(array_size); 
-    get_cells_values(n,a,array_size);
+    if(get_cells_values(n,a,array_size,argv[3]) != 0) {
+        free(a);
+        return -1;
+    }
     unsigned char regla = (unsigned char)atoi(argv[1]);
 
    // for (int j = 0; j<n; ++j) printf("%d",a[j]);
-    printf("\n");
+   // printf("\n");
     for (int i = 0; i < n*(n-1); ++i){
          unsigned char caracter = proximo(a,i/n,i%n,regla,n);
        //  printf("%d",caracter);
@@ -52,11 +56,13 @@ int main(int argc, char* const* argv){
          a[i+n] = caracter;
     }
 
+    
     //Guardo el arreglo en una imagen pbm
     char* nombre_salida = "";
     if (argc == 5) nombre_salida = argv[4];
     else nombre_salida = argv[3];
     strstr(nombre_salida,".pbm");
+    printf("Grabando %s.pbm\n",nombre_salida);
     
     int i,temp = 0;
     FILE* pbmimg;
@@ -73,6 +79,7 @@ int main(int argc, char* const* argv){
         if ((i+1)%n==0) fprintf(pbmimg, "\n");
     }
     fclose(pbmimg);
+    printf("%s\n","Listo");
 
     free(a);
     return 0;

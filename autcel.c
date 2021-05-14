@@ -1,7 +1,7 @@
 #include "autcel.h"
 #include "file_reader.h"
 #define TAMANIO_INICIAL_A 8
-size_t get_cells_values(int n,unsigned char *a,int array_size){
+size_t get_cells_values(int n,unsigned char *a,int array_size,char* input){
 
     //unsigned char a[] = {0, 0, 1, 0, 0, 0, 1, 0, 1, 1};
 /*
@@ -13,15 +13,16 @@ size_t get_cells_values(int n,unsigned char *a,int array_size){
    
     file_reader_t file;
     
-    if (file_reader_init(&file, "inicial") == FR_ERROR)
+    if (file_reader_init(&file, input) == FR_ERROR)
         return FR_ERROR;
     while(((bit = file_reader_number(&file)) != FR_ERROR)){
-        if (array_size<(tope_a+1)*sizeof(unsigned char)){
+       /* if (array_size<(tope_a+1)*sizeof(unsigned char)){
             a = realloc(a, array_size*2);    //todo check null 
             array_size*=2;
-        }
+        }*/
         a[tope_a++] = bit;
     }
+    if (tope_a != n) return -1; //cant de celdas != n;
 
     file_reader_uninit(&file);
 
@@ -30,17 +31,19 @@ size_t get_cells_values(int n,unsigned char *a,int array_size){
    // printf("Proximo %d\n", proximo(a, 0, 4, regla, 10));
 
    // free(a);
+    return 0;
 }
 
 // pensado como un arreglo donde cada char es una sola celda
 unsigned char proximo(unsigned char* a,
                       unsigned int i, unsigned int j,
                       unsigned char regla, unsigned int N){
+  //   for (int j = 0; j<N; ++j) printf("%d",a[j]-'0' );
+
     char c = a[j + i*N]; // j es la celda a la que quiero acceder,
                              // i es la fila, pero como es solo un arreglo, tengo qeu moverme i*N bytes
                              // equivale a a[i][j]
                              // celda va a valer 1 o 0 en nuestro caso
-
     char l, r;
 
     if (!j){ // casos borde, si j es el bit 0 (la celda mas a la izq)
@@ -54,7 +57,10 @@ unsigned char proximo(unsigned char* a,
         l = a[j + i * N - 1];
         r = a[j + i * N + 1];
     }
-    
+ //   printf("l %d\n", l);
+ //   printf("c %d\n", c);
+ //   printf("r %d\n", r);
+
     // tenemos que acceder a regla en su bit lcr -> necesitamos una mascara para ese bit
     l <<= 2; // shifteamos l 2 posiciones (si es 0000 0001 quedara como 0000 0100)
     c <<= 1; // shifteamos c 1 posicion (si es 0000 0001 quedara como 0000 0010)
