@@ -1,0 +1,6 @@
+#!/bin/sh
+gcc file_reader.c -Wall -Werror -Wextra -c
+gcc autcel.c -Wall -Werror -Wextra -c
+gcc proximo.c -Wall -Werror -Wextra -c
+gcc main.c -Wall -Werror -Wextra -c
+gcc *.o -o autcel

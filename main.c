@@ -4,14 +4,13 @@
 
 int main(int argc, char* const* argv){
     int opt;
-/*
     while (1){
         static struct option options[] = {
             {"help", no_argument, 0, 'h'},
             {"version", no_argument, 0, 'v'},
             {0,0,0,0}
         };
-        opt = getopt_long(argc, argv, "hvo:", options, 0);
+        opt = getopt_long(argc, argv, "hvo::", options, 0);
         if (opt == -1){
             break;
         }
@@ -28,92 +27,22 @@ int main(int argc, char* const* argv){
                 printf("version %s\n", V);
                 break;
             case 'o':
-                // do stuff
-                printf("%d %d\n", atoi(argv[1]), atoi(argv[2]));
+            		if (argc != 5 && argc != 6){
+                    printf("%d\n", argc);
+            		    fprintf(stderr,"%s", "-o received wrong number of arguments, expected 6\n");
+                    return -1;
+            		}
+                unsigned char* a = start(atoi(argv[1]), atoi(argv[2]), argv[3]);
+                if (!a){
+                    return -1;
+                }
+            		build_pbm((argc == 6 ? argv[5] : argv[3]), a, atoi(argv[2]));
                 break;
             default:
                 printf("Error\n");
                 return -1;
         }
     }
-*/
-    printf("%s\n","Leyendo estado inicial...");
-    unsigned int n = atoi(argv[2]);
-    int array_size = n * n * sizeof(unsigned char);
-    unsigned char* a = malloc(array_size); 
-    if(get_cells_values(n,a,array_size,argv[3]) != 0) {
-        free(a);
-        return -1;
-    }
-    unsigned char regla = (unsigned char)atoi(argv[1]);
 
-   // for (int j = 0; j<n; ++j) printf("%d",a[j]);
-   // printf("\n");
-    for (int i = 0; i < n*(n-1); ++i){
-         unsigned char caracter = proximo(a,i/n,i%n,regla,n);
-       //  printf("%d",caracter);
-       //  if ((i+1)%n == 0) printf("\n");
-         a[i+n] = caracter;
-    }
-
-    
-    //Guardo el arreglo en una imagen pbm
-    char* nombre_salida = "";
-    if (argc == 5) nombre_salida = argv[4];
-    else nombre_salida = argv[3];
-    strstr(nombre_salida,".pbm");
-    printf("Grabando %s.pbm\n",nombre_salida);
-    
-    int i,temp = 0;
-    FILE* pbmimg;
-    pbmimg = fopen(nombre_salida, "wb");
-    // Writing Magic Number to the File
-    fprintf(pbmimg, "P1\n"); 
-    // Writing Width and Height
-    fprintf(pbmimg, "%d %d\n", n, n); 
-    int count = 0;
-    for (i = 0; i < n*n; i++) {
-        temp = a[i];
-        // Writing the gray values in the 2D array to the file
-        fprintf(pbmimg, "%d ", temp);
-        if ((i+1)%n==0) fprintf(pbmimg, "\n");
-    }
-    fclose(pbmimg);
-    printf("%s\n","Listo");
-
-    free(a);
     return 0;
 }
-
-/*
-#include <stdio.h>
-#include "controller.h"
-
-#define MIN_ARGS 2
-#define MAX_ARGS 8
-
-int main(int argc, char const *argv[]){
-	if (argc < MIN_ARGS || argc > MAX_ARGS) return (int)error_handler(ARGV_QUANTITY);
-
-	controller_t controller;
-
-	size_t controller_ret, execute_ret;
-
-	controller_ret = controller_init(&controller, argc, argv);
-	if(controller_ret != 0){
-		error_handler(controller_ret);
-		return -1;
-	}
-
-	execute_ret = controller_execute(&controller);
-	if(execute_ret != 0){
-		error_handler(execute_ret);
-		return -1;
-	}
-
-	controller_destroy(&controller);
-
-	return 0;
-}
-
-*/
