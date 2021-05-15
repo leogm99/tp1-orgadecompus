@@ -137,8 +137,7 @@ proximo_end:
     addiu   $sp, $sp, FRAME_SIZE 
     jr      $ra
 
-
 overflow:
-    # handle
-
+    add $v0, $0, $0 
+    b proximo_end
 .end proximo
