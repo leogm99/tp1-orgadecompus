@@ -68,7 +68,7 @@ int build_pbm(const char* outputprefix,
 
   for (i = 0; i < N * N; i++) {
       temp = a[i];
-      fprintf(pbmimg, "%d ", temp);
+      fprintf(pbmimg, "%d ", (int)temp);
       if ((i+1)%N==0) fprintf(pbmimg, "\n");
   }
 
