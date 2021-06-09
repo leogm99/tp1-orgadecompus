@@ -28,8 +28,7 @@ int main(int argc, char* const* argv){
                 break;
             default:
             		if (argc != 4 && argc != 6){
-                    printf("%d\n", argc);
-            		    fprintf(stderr,"%s", "-o received wrong number of arguments, expected 4 or 6\n");
+            		    fprintf(stderr,"%s", "received wrong number of arguments, expected 4 or 6\n");
                     return -1;
             		}
                     unsigned char* a = start(atoi(argv[1]), atoi(argv[2]), argv[3]);
