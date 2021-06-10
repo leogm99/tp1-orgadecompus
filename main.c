@@ -11,9 +11,6 @@ int main(int argc, char* const* argv){
             {0,0,0,0}
         };
         opt = getopt_long(argc, argv, "hvo::", options, 0);
-     /*   if (opt == -1){
-            break;
-        }*/
         switch (opt){
             case 'h':
                 printf("Uso:\n");
@@ -37,9 +34,6 @@ int main(int argc, char* const* argv){
                     }
             		build_pbm((argc == 6 ? argv[5] : argv[3]), a, atoi(argv[2]));
                     return 0;
-            //default:
-              //  printf("Error\n");
-              //  return -1;
         }
     }
 
